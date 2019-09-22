@@ -4,14 +4,17 @@ public class httpc {
 
     public static void main(String[] args) {
         httpc httpc = new httpc();
-        HttpRequestExecutor httpRequestExecutor = new HttpRequestExecutor();
         String action = args[0];
         switch (action) {
             case Constants.getMethod:
-                GetRequestFormatter getRequestFormatter = httpc.setGetRequestFormatterObject(args);
-                httpRequestExecutor.executeGetRequest(getRequestFormatter);
+                GetRequest getRequest = httpc.setGetRequestFormatterObject(args);
+                getRequest.setMethod();
+                getRequest.executeRequest();
                 break;
             case Constants.postMethod:
+                PostRequest postRequest = httpc.setPostRequestFormatterObject(args);
+                postRequest.setMethod();
+                postRequest.executeRequest();
                 break;
             case Constants.help:
                 httpc.showHelpMessage(args);
@@ -24,21 +27,61 @@ public class httpc {
         helperCommandInformation.executeHelpCommand(args);
     }
 
-    private GetRequestFormatter setGetRequestFormatterObject(String[] args) {
-        GetRequestFormatter getRequestFormatter = new GetRequestFormatter();
+    private GetRequest setGetRequestFormatterObject(String[] args) {
+        GetRequest getRequest = new GetRequest();
         for (int i = 1; i < args.length; i++) {
             switch (args[i]) {
                 case "-v":
-                    getRequestFormatter.setVerbose(true);
+                    getRequest.setVerbose();
                     break;
                 case "-h":
-                    getRequestFormatter.setHeader(true);
-                    getRequestFormatter.setData(args[i + 1]);
+                    getRequest.setHeader();
+                    i = i + 1;
+                    getRequest.setHeaderValue(args[i]);
                     break;
                 default:
-                    getRequestFormatter.setUrl(args[i]);
+                    String url = args[i];
+                    if (url.startsWith("\"") || url.startsWith("'")) {
+                        url = url.substring(1, url.length() - 1);
+                    }
+                    getRequest.setUrl(url);
             }
         }
-        return getRequestFormatter;
+        return getRequest;
+    }
+
+    private PostRequest setPostRequestFormatterObject(String[] args) {
+        PostRequest postRequest = new PostRequest();
+        for (int i = 1; i < args.length; i++) {
+            switch (args[i]) {
+                case "-v":
+                    postRequest.setVerbose();
+                    break;
+                case "-h":
+                    postRequest.setHeader();
+                    postRequest.setHeaderValue(args[i + 1]);
+                    break;
+                case "-d":
+                    postRequest.setInlineDataFlag();
+                    String inlineData = args[i + 1];
+                    if (inlineData.startsWith("\"") || inlineData.startsWith("'")) {
+                        inlineData = inlineData.substring(1, inlineData.length() - 1);
+                    }
+                    postRequest.setInlineDataValue(inlineData);
+                    break;
+                case "-f":
+                    postRequest.setFileFlag();
+                    postRequest.setFileName(args[i + 1]);
+                    break;
+                default:
+                    String url = args[i];
+                    if (url.startsWith("\"") || url.startsWith("'")) {
+                        url = url.substring(1, url.length() - 1);
+                    }
+                    postRequest.setUrl(url);
+                    break;
+            }
+        }
+        return postRequest;
     }
 }
