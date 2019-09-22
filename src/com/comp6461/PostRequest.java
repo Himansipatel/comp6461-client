@@ -131,6 +131,7 @@ public class PostRequest {
             Socket socket = new Socket(inetAddress, 80);
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
             bufferedWriter.write("POST " + queryString + " HTTP/1.0\r\n");
+            bufferedWriter.write("Host: " + host + "\r\n");
             bufferedWriter.write("Content-Length: " + contentPost.length() + "\r\n");
             if (this.isHeader() && !this.getHeaderValue().equalsIgnoreCase("")) {
                 bufferedWriter.write("Content-Type: application/json\r\n");
