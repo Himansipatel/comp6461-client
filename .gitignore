@@ -2,3 +2,6 @@ out/
 .idea
 *.iml
 java/netsample/*
+/bin/
+.classpath
+.project

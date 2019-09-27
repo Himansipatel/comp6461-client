@@ -10,14 +10,14 @@ public class httpc {
             case Constants.getMethod:
                 request = httpc.setRequestObject(args);
                 if (httpc.validateRequest(request))
-                    request.executeRequest();
+                    request.executeRequest(request.getUrl());
                 else
                     System.out.println("Please enter a valid request");
                 break;
             case Constants.postMethod:
                 request = httpc.setRequestObject(args);
                 if (httpc.validateRequest(request))
-                    request.executeRequest();
+                    request.executeRequest(request.getUrl());
                 else
                     System.out.println("Please enter a valid request");
                 break;
