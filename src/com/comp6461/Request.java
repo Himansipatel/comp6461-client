@@ -20,7 +20,6 @@ public class Request {
 	private String fileName = "";
 	private String data = "";
 	private String outputFileName = "";
-	private boolean isRedirect = false;
 	private String redirectUrl = "";
 
 	public String getRedirectUrl() {
@@ -201,7 +200,7 @@ public class Request {
 		File file = new File(outputFile);
 		file.setWritable(true);
 		try {
-			FileWriter fileWriter = new FileWriter(file);
+			FileWriter fileWriter = new FileWriter(file, true);
 			fileWriter.write(responseData);
 			fileWriter.close();
 		} catch (IOException e) {

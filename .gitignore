@@ -5,3 +5,4 @@ java/netsample/*
 /bin/
 .classpath
 .project
+redirect.txt
