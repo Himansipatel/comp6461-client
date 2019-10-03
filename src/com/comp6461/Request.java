@@ -131,6 +131,7 @@ public class Request {
 
 	void executeRequest(String receivedUrl) {
 		try {
+			receivedUrl = this.getUpdatedUrl(receivedUrl);
 			String contentPost = "";
 			boolean printFromStart = this.isVerbose();
 			URL url = new URL(receivedUrl);
@@ -238,5 +239,14 @@ public class Request {
 		}
 		bufferedReader.close();
 		return data.toString();
+	}
+
+	private String getUpdatedUrl(String url) {
+		if (url.startsWith("http://") || url.startsWith("https://"))
+			return url;
+		else {
+			url = "http://" + url;
+			return url;
+		}
 	}
 }
