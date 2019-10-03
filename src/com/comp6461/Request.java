@@ -169,9 +169,10 @@ public class Request {
 			if (isNewRedirectedUrlFound(responseData.toString())) {
 				executeRequest(this.getRedirectUrl());
 			}
-			System.out.println(responseData);
 			if (this.isWriteToFile()) {
 				writeResponseToFile(responseData.toString());
+			} else {
+				System.out.println(responseData);
 			}
 			bufferedReader.close();
 			bufferedWriter.close();
@@ -198,9 +199,15 @@ public class Request {
 
 	private void writeResponseToFile(String responseData) {
 		String outputFile = this.getOutputFileName();
+		System.out.println("Writing response to file " + outputFile);
 		File file = new File(outputFile);
-		file.setWritable(true);
 		try {
+			if (!file.exists()) {
+				if (file.getParent() != null)
+					file.getParentFile().mkdirs();
+				file.createNewFile();
+			}
+			file.setWritable(true);
 			FileWriter fileWriter = new FileWriter(file, true);
 			fileWriter.write(responseData);
 			fileWriter.close();
