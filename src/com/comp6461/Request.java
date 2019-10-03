@@ -147,7 +147,7 @@ public class Request {
 				bufferedWriter.write("Content-Length: " + contentPost.length() + "\r\n");
 			}
 			if (this.isHeader() && !this.getHeaderValue().equalsIgnoreCase("")) {
-				bufferedWriter.write("Content-Type: " + this.getHeaderValue() + "\r\n");
+				bufferedWriter.write(this.getHeaderValue() + "\r\n");
 			}
 			if (this.getMethod().equalsIgnoreCase("post")) {
 				bufferedWriter.write("\r\n");
@@ -209,7 +209,7 @@ public class Request {
 	}
 
 	private String getQueryString(URL url) {
-		String queryString = "";
+		String queryString = "/";
 		if (url.getPath() != null && !url.getPath().equalsIgnoreCase(""))
 			queryString += url.getPath();
 		if (this.getMethod().equalsIgnoreCase("get")) {
