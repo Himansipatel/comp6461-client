@@ -1,29 +1,27 @@
 package com.comp6461;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class httpc {
+
+    private List<String> headersValue = new ArrayList<>();
 
     public static void main(String[] args) {
         httpc httpc = new httpc();
         String action = args[0];
-        Request request = null;
-        switch (action) {
-            case Constants.getMethod:
-                request = httpc.setRequestObject(args);
-                if (httpc.validateRequest(request))
-                    request.executeRequest(request.getUrl());
-                else
-                    System.out.println("Please enter a valid request");
-                break;
-            case Constants.postMethod:
-                request = httpc.setRequestObject(args);
-                if (httpc.validateRequest(request))
-                    request.executeRequest(request.getUrl());
-                else
-                    System.out.println("Please enter a valid request");
-                break;
-            case Constants.help:
-                httpc.showHelpMessage(args);
-                break;
+        Request request;
+        if (action.equals(Constants.getMethod) || action.equals(Constants.postMethod)) {
+            request = httpc.setRequestObject(args);
+            if (httpc.validateRequest(request))
+                request.executeRequest(request.getUrl());
+            else
+                System.out.println("Please enter a valid request");
+        } else if (action.equals(Constants.help)) {
+            httpc.showHelpMessage(args);
+        } else {
+            System.out.println("Please look Manual Carefully");
+            httpc.showHelpMessage(args);
         }
     }
 
@@ -59,7 +57,8 @@ public class httpc {
                 case "-h":
                     request.setHeader();
                     i = i + 1;
-                    request.setHeaderValue(args[i]);
+                    headersValue.add(args[i]);
+                    request.setHeaderValue(headersValue);
                     break;
                 case "-d":
                     request.setInlineDataFlag();
